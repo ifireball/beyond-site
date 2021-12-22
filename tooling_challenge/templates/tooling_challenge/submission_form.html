@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tooling challenge submission form</title>
+</head>
+
+<body>
+  <h1>Beyond tooling challenge submission form</h1>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit">
+  </form>
+</body>
+
+</html>
