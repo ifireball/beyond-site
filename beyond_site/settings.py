@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "huey.contrib.djhuey",
     "tooling_challenge.apps.ToolingChallengeConfig",
 ]
 
@@ -80,6 +81,15 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
+}
+
+
+# Huey background tasks setup
+HUEY = {
+    "huey_class": "huey.SqliteHuey",
+    "name": str(DATABASES["default"]["NAME"]),
+    "results": False,
+    "immediate": False,
 }
 
 

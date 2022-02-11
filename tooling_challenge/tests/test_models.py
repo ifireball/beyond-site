@@ -46,4 +46,9 @@ def test_submission_by_uuid(some_submissions: list[ToolingChallengeSubmission]):
 
 @pytest.mark.django_db
 def test_new_submission_triggers_url_test():
-    """That that crating a submission triggers a test of its repo URL"""
+    """Test that crating a submission triggers a test of its repo URL"""
+    submission = ToolingChallengeSubmission(
+        name="Howl",
+        email="howl@wisards.org",
+        repo_url="https://github.com/howl/challnge1.git",
+    )
