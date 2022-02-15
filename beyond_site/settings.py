@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "tooling_challenge.apps.ToolingChallengeConfig",
+    "mentor_certs.apps.MentorCertsConfig",
 ]
 
 MIDDLEWARE = [
