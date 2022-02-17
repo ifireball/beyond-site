@@ -5,18 +5,24 @@ from django.db import models
 class StaffMember(models.Model):
     """Information about Beyond staff members"""
 
-    name = models.TextField(blank=False, null=False)
+    name = models.CharField(blank=False, null=False, max_length=200)
     email = models.EmailField(blank=False, null=False)
+
+    def __str__(self):
+        return self.name
 
 
 class Course(models.Model):
     """Information about Beyond courses"""
 
-    name = models.TextField(unique=True, blank=False, null=False, max_length=60)
+    name = models.CharField(unique=True, blank=False, null=False, max_length=60)
     start_date = models.DateField(null=False)
     end_date = models.DateField(null=False)
 
     staff = models.ManyToManyField(to=StaffMember, through="Certificate")
+
+    def __str__(self):
+        return self.name
 
 
 class Certificate(models.Model):
