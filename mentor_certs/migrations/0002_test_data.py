@@ -34,29 +34,40 @@ class Migration(migrations.Migration):
                 beyond_cy01 := Course(
                     name="Beyond Cyber 01",
                     start_date=date(2021, 10, 17),
-                    end_date=date(2022, 12, 26),
+                    end_date=date(2021, 12, 26),
                 ),
-                bkorren := StaffMember(name="Barak Korren", email="bkorren@redhat.com"),
-                khakimi := StaffMember(name="Kobi Hakimi", email="bkorren@redhat.com"),
                 oamsalem := StaffMember(
                     name="Omer Amsalem", email="bkorren@redhat.com"
                 ),
                 hkrasnik := StaffMember(
                     name="Haim Krasniker", email="bkorren@redhat.com"
                 ),
+                bkorren := StaffMember(name="Barak Korren", email="bkorren@redhat.com"),
                 lnachshon := StaffMember(
                     name="Luiza Nachshon", email="bkorren@redhat.com"
                 ),
+                khakimi := StaffMember(name="Kobi Hakimi", email="bkorren@redhat.com"),
             )
             obj: models.Model
             for obj in course_and_instructors:
                 obj.save()
 
             Certificate(
-                course=beyond_os07,
-                staff_member=bkorren,
-                mentor_level=Certificate.MentorLevel.MENTOR_LEAD4,
+                course=beyond_cy01,
+                staff_member=lnachshon,
+                mentor_level=Certificate.MentorLevel.MENTOR1,
+                instructor_level=Certificate.InstructorLevel.SPEAKER,
+            ).save()
+            Certificate(
+                course=beyond_cy01,
+                staff_member=hkrasnik,
+                mentor_level=Certificate.MentorLevel.NONE,
                 instructor_level=Certificate.InstructorLevel.COURSE_LEAD,
+            ).save()
+            Certificate(
+                course=beyond_os07,
+                staff_member=oamsalem,
+                mentor_level=Certificate.MentorLevel.MENTOR4,
             ).save()
             Certificate(
                 course=beyond_os07,
@@ -66,20 +77,9 @@ class Migration(migrations.Migration):
             ).save()
             Certificate(
                 course=beyond_os07,
-                staff_member=oamsalem,
-                mentor_level=Certificate.MentorLevel.MENTOR4,
-            ).save()
-            Certificate(
-                course=beyond_cy01,
-                staff_member=hkrasnik,
-                mentor_level=Certificate.MentorLevel.NONE,
+                staff_member=bkorren,
+                mentor_level=Certificate.MentorLevel.MENTOR_LEAD4,
                 instructor_level=Certificate.InstructorLevel.COURSE_LEAD,
-            ).save()
-            Certificate(
-                course=beyond_cy01,
-                staff_member=lnachshon,
-                mentor_level=Certificate.MentorLevel.MENTOR1,
-                instructor_level=Certificate.InstructorLevel.SPEAKER,
             ).save()
 
     operations = [

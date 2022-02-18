@@ -1,4 +1,6 @@
 """mentor_certs models"""
+from __future__ import annotations
+
 from django.db import models
 
 
@@ -7,6 +9,9 @@ class StaffMember(models.Model):
 
     name = models.CharField(blank=False, null=False, max_length=200)
     email = models.EmailField(blank=False, null=False)
+
+    class Meta:
+        ordering = ["name", "email"]
 
     def __str__(self):
         return self.name
@@ -21,8 +26,21 @@ class Course(models.Model):
 
     staff = models.ManyToManyField(to=StaffMember, through="Certificate")
 
+    class Meta:
+        ordering = ["-end_date"]
+
     def __str__(self):
         return self.name
+
+
+class CertificatesManager(models.Manager["Certificate"]):
+    """Model manager for certificates"""
+
+    @property
+    def default(self) -> Certificate:
+        """Get the certificate from the most recently ended course for the
+        first staff memebr when ordered lexicographically"""
+        return self.first()
 
 
 class Certificate(models.Model):
@@ -57,3 +75,8 @@ class Certificate(models.Model):
     instructor_level = models.IntegerField(
         choices=InstructorLevel.choices, default=InstructorLevel.NONE
     )
+
+    class Meta:
+        ordering = ["course", "staff_member"]
+
+    certificates = CertificatesManager()
