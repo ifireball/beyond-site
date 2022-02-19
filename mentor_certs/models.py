@@ -80,3 +80,22 @@ class Certificate(models.Model):
         ordering = ["course", "staff_member"]
 
     certificates = CertificatesManager()
+
+    def __str__(self) -> str:
+        return f"{self.staff_member.name} ({self.course.name})"
+
+    @property
+    def nav_previous(self) -> Certificate:
+        """points to the previous certificate in the same course ordered
+        lexicographically by staff_member name or None if its the first one"""
+        return self.course.certificate_set.filter(
+            staff_member__name__lt=self.staff_member.name
+        ).last()
+
+    @property
+    def nav_next(self) -> Certificate:
+        """points to the next certificate in the same course ordered
+        lexicographically by staff_member name or None if its the last one"""
+        return self.course.certificate_set.filter(
+            staff_member__name__gt=self.staff_member.name
+        ).first()

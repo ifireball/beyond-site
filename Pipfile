@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django = "*"
 huey = "*"
+more-itertools = "*"
 
 [dev-packages]
 pylint = "*"
