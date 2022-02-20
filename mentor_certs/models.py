@@ -99,3 +99,13 @@ class Certificate(models.Model):
         return self.course.certificate_set.filter(
             staff_member__name__gt=self.staff_member.name
         ).first()
+
+    @property
+    def nav_courses(self) -> models.QuerySet[Certificate]:
+        """Return a list of certificates that can be used to naviget to other
+        courses"""
+        return (
+            self.__class__.certificates.exclude(course=self.course)
+            .annotate(models.Min("course__staff__name"))
+            .filter(staff_member__name=models.F("course__staff__name__min"))
+        )

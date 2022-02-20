@@ -59,3 +59,26 @@ def test_navigation(course: str, certnames: tuple[str, str, str]) -> None:
 
     assert current.nav_previous == previous
     assert current.nav_next == nextcert
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    "current_course, current_sm, nav_cert_names",
+    [
+        ("Beyond OS 06", "Barak Korren", [("Beyond Cyber 01", "Haim Krasniker")]),
+        ("Beyond OS 06", "Kobi Hakimi", [("Beyond Cyber 01", "Haim Krasniker")]),
+        ("Beyond Cyber 01", "Luiza Nachshon", [("Beyond OS 06", "Barak Korren")]),
+    ],
+)
+def test_course_navigation(
+    current_course: str, current_sm: str, nav_cert_names: list[tuple[str, str]]
+) -> None:
+    """The nav_courses method returns a list of cetificates to navigate to to
+    "jump" to other courses"""
+    current_cert = Certificate.certificates.get(
+        course__name=current_course, staff_member__name=current_sm
+    )
+
+    out = current_cert.nav_courses
+
+    assert list(out.values_list("course__name", "staff_member__name")) == nav_cert_names
