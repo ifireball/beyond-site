@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from django.db import models
+from django.urls import reverse
+
+from .view_names import CERTIFICATE_VIEW
 
 
 class StaffMember(models.Model):
@@ -109,3 +112,7 @@ class Certificate(models.Model):
             .annotate(models.Min("course__staff__name"))
             .filter(staff_member__name=models.F("course__staff__name__min"))
         )
+
+    def get_absolute_url(self) -> str:
+        """Return a URL for viewing the certificate"""
+        return reverse(CERTIFICATE_VIEW, args=[self.pk])
