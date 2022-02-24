@@ -1,3 +1,54 @@
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+    <title>Beyond mentor certificates</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Mentor certificates</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{certificate.course.name}}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                {% for cert in certificate.nav_courses %}
+                  <li><a class="dropdown-item" href="{{ cert.get_absolute_url }}">{{cert.course.name}}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            <form class="container-fluid justify-content-start">
+              <div class="input-group">
+                <a href="{{certificate.nav_previous.get_absolute_url}}" class="btn btn-outline-secondary{% if certificate.nav_previous is None %} disabled{% endif %}" role="button" id="prev-cert"><i class="bi-caret-left-fill" role="img" aria-label="Previous certificate"></i></a>
+                <input type="text" class="form-control" aria-label="Certificate staff member" readonly value="{{certificate.staff_member.name}}">
+                <a href="{{certificate.nav_next.get_absolute_url}}" class="btn btn-outline-secondary{% if certificate.nav_next is None %} disabled{% endif %}" role="button" id="next-cert"><i class="bi-caret-right-fill" role="img" aria-label="Next certificate"></i></a>
+              </div>
+            </form>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <h1>Certificate of recognition</h1>
+    <h2>Contributing above and beyond</h2>
+    <p>Presented to: {{certificate.staff_member.name}}</p>
+    <p>Date: {{certificate.course.end_date}}</p>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
 </html>
 
