@@ -82,3 +82,53 @@ def test_course_navigation(
     out = current_cert.nav_courses
 
     assert list(out.values_list("course__name", "staff_member__name")) == nav_cert_names
+
+
+@pytest.mark.parametrize(
+    "level, expected",
+    [
+        (Certificate.MentorLevel.NONE, False),
+        (Certificate.MentorLevel.MENTOR1, True),
+        (Certificate.MentorLevel.MENTOR_LEAD4, True),
+    ],
+)
+def test_certificate_is_mentor(level: Certificate.MentorLevel, expected: bool) -> None:
+    """The is_mentor property returns True for all levels but NONE"""
+    cert = Certificate(mentor_level=level)
+    assert cert.is_mentor == expected
+
+
+@pytest.mark.parametrize(
+    "level, expected",
+    [
+        (Certificate.MentorLevel.NONE, False),
+        (Certificate.MentorLevel.MENTOR1, False),
+        (Certificate.MentorLevel.MENTOR_LEAD4, True),
+        (Certificate.MentorLevel.MENTOR_LEAD1, True),
+    ],
+)
+def test_certificate_is_lead_mentor(
+    level: Certificate.MentorLevel, expected: bool
+) -> None:
+    """The is_lead_mentor property returns True for all lead levels"""
+    cert = Certificate(mentor_level=level)
+    assert cert.is_lead_mentor == expected
+
+
+@pytest.mark.parametrize(
+    "level, expected",
+    [
+        (Certificate.MentorLevel.NONE, 0),
+        (Certificate.MentorLevel.MENTOR1, 1),
+        (Certificate.MentorLevel.MENTOR_LEAD4, 4),
+        (Certificate.MentorLevel.MENTOR_LEAD1, 1),
+        (Certificate.MentorLevel.MENTOR2, 2),
+        (Certificate.MentorLevel.MENTOR3, 3),
+    ],
+)
+def test_certificate_mentor_semesters(
+    level: Certificate.MentorLevel, expected: int
+) -> None:
+    """The mentor_semesters returns how many semesters the mentor_level maps to"""
+    cert = Certificate(mentor_level=level)
+    assert cert.mentor_semesters == expected

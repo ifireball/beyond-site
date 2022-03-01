@@ -116,3 +116,40 @@ class Certificate(models.Model):
     def get_absolute_url(self) -> str:
         """Return a URL for viewing the certificate"""
         return reverse(CERTIFICATE_VIEW, args=[self.pk])
+
+    @property
+    def is_mentor(self) -> bool:
+        """True if the mentor_level is of a mentor"""
+        return self.mentor_level != self.MentorLevel.NONE
+
+    @property
+    def is_lead_mentor(self) -> bool:
+        """True if mentor_level is of lead mentor"""
+        return self.mentor_level in (
+            self.MentorLevel.MENTOR_LEAD1,
+            self.MentorLevel.MENTOR_LEAD2,
+            self.MentorLevel.MENTOR_LEAD3,
+            self.MentorLevel.MENTOR_LEAD4,
+        )
+
+    @property
+    def mentor_semesters(self) -> int:
+        """Returns the approximate number of semesters it take to achive the level"""
+        if self.mentor_level == self.MentorLevel.NONE:
+            return 0
+        if self.mentor_level in (
+            self.MentorLevel.MENTOR1,
+            self.MentorLevel.MENTOR_LEAD1,
+        ):
+            return 1
+        if self.mentor_level in (
+            self.MentorLevel.MENTOR2,
+            self.MentorLevel.MENTOR_LEAD2,
+        ):
+            return 2
+        if self.mentor_level in (
+            self.MentorLevel.MENTOR3,
+            self.MentorLevel.MENTOR_LEAD3,
+        ):
+            return 3
+        return 4

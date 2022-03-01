@@ -124,4 +124,10 @@
        text-anchor="middle"
        inkscape:label="date">{{cert_date}}</text>
   </g>
+  {% if certificate.is_mentor %}
+    <circle cx="148" cy="362" r="62" style="stroke:none;fill:white" />
+    {% with x=96 y=310 width=104 height=104 %}
+      {% include "mentor_certs/badge-mentor.svg" %}
+    {% endwith %}
+  {% endif %}
 </svg>
