@@ -153,3 +153,13 @@ class Certificate(models.Model):
         ):
             return 3
         return 4
+
+    @property
+    def is_speaker(self) -> bool:
+        """Returns whether its a speaker's certificate"""
+        return self.instructor_level != self.InstructorLevel.NONE
+
+    @property
+    def is_course_lead(self) -> bool:
+        """Returns whether its a course lead certificate"""
+        return self.instructor_level == self.InstructorLevel.COURSE_LEAD

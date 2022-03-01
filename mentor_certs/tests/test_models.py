@@ -132,3 +132,35 @@ def test_certificate_mentor_semesters(
     """The mentor_semesters returns how many semesters the mentor_level maps to"""
     cert = Certificate(mentor_level=level)
     assert cert.mentor_semesters == expected
+
+
+@pytest.mark.parametrize(
+    "level, expected",
+    [
+        (Certificate.InstructorLevel.NONE, False),
+        (Certificate.InstructorLevel.SPEAKER, True),
+        (Certificate.InstructorLevel.COURSE_LEAD, True),
+    ],
+)
+def test_certificate_is_speaker(
+    level: Certificate.InstructorLevel, expected: bool
+) -> None:
+    """The is_speaker property returns whether its a speaker certificate"""
+    cert = Certificate(instructor_level=level)
+    assert cert.is_speaker == expected
+
+
+@pytest.mark.parametrize(
+    "level, expected",
+    [
+        (Certificate.InstructorLevel.NONE, False),
+        (Certificate.InstructorLevel.SPEAKER, False),
+        (Certificate.InstructorLevel.COURSE_LEAD, True),
+    ],
+)
+def test_certificate_is_course_lead(
+    level: Certificate.InstructorLevel, expected: bool
+) -> None:
+    """The is_course_lead property returns whether its a course lead certificate"""
+    cert = Certificate(instructor_level=level)
+    assert cert.is_course_lead == expected

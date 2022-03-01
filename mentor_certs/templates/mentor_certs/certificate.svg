@@ -130,4 +130,10 @@
       {% include "mentor_certs/badge-mentor.svg" %}
     {% endwith %}
   {% endif %}
+  {% if certificate.is_speaker %}
+    <circle cx="148" cy="{{certificate.is_mentor|yesno:'496,362'}}" r="62" style="stroke:none;fill:white" />
+    {% with x=96 y=certificate.is_mentor|yesno:'444,310' width=104 height=104 %}
+      {% include "mentor_certs/badge-speaker.svg" %}
+    {% endwith %}
+  {% endif %}
 </svg>
