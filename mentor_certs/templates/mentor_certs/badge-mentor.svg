@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
    x="{{x}}"
@@ -56,30 +55,8 @@
       }
     </style>
   </defs>
-  <g
-     inkscape:groupmode="layer"
-     id="layer5"
-     inkscape:label="background-junior"
-     style="display:inline">
-    <path
-       style="fill:#f2f7e6;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.932506"
-       id="path5798"
-       sodipodi:type="arc"
-       sodipodi:cx="79.375"
-       sodipodi:cy="79.375"
-       sodipodi:rx="79.375"
-       sodipodi:ry="79.375"
-       sodipodi:start="0.88888709"
-       sodipodi:end="0.88024983"
-       sodipodi:arc-type="arc"
-       d="M 129.40319,140.99943 A 79.375,79.375 0 0 1 17.858739,129.53614 79.375,79.375 0 0 1 29.081141,17.967196 79.375,79.375 0 0 1 140.67406,28.94866 79.375,79.375 0 0 1 129.93359,140.56503"
-       sodipodi:open="true" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="g17892"
-     inkscape:label="background-senior"
-     style="display:{{certificate.is_lead_mentor|yesno:'inline,none'}}">
+  {% if certificate.is_lead_mentor %}
+  <g inkscape:groupmode="layer" id="g17892" inkscape:label="background-senior">
     <path
        style="fill:#e8e4f6;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.932506"
        id="path17890"
@@ -94,11 +71,24 @@
        d="M 129.40319,140.99943 A 79.375,79.375 0 0 1 17.858739,129.53614 79.375,79.375 0 0 1 29.081141,17.967196 79.375,79.375 0 0 1 140.67406,28.94866 79.375,79.375 0 0 1 129.93359,140.56503"
        sodipodi:open="true" />
   </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="Icon-mentors"
-     style="display:inline">
+  {% else %}
+  <g inkscape:groupmode="layer" id="layer5" inkscape:label="background-junior">
+    <path
+       style="fill:#f2f7e6;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.932506"
+       id="path5798"
+       sodipodi:type="arc"
+       sodipodi:cx="79.375"
+       sodipodi:cy="79.375"
+       sodipodi:rx="79.375"
+       sodipodi:ry="79.375"
+       sodipodi:start="0.88888709"
+       sodipodi:end="0.88024983"
+       sodipodi:arc-type="arc"
+       d="M 129.40319,140.99943 A 79.375,79.375 0 0 1 17.858739,129.53614 79.375,79.375 0 0 1 29.081141,17.967196 79.375,79.375 0 0 1 140.67406,28.94866 79.375,79.375 0 0 1 129.93359,140.56503"
+       sodipodi:open="true" />
+  </g>
+  {% endif %}
+  <g inkscape:groupmode="layer" id="layer2" inkscape:label="Icon-mentors">
     <g
        id="g1529"
        transform="matrix(2.8392518,0,0,3.0273773,27.668641,11.708762)">
@@ -112,11 +102,8 @@
          id="path1527" />
     </g>
   </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer3"
-     inkscape:label="1 course"
-     style="display:{% if certificate.mentor_semesters == 1 %}inline{% else %}none{% endif %}">
+  {% if certificate.mentor_semesters == 1 %}
+  <g inkscape:groupmode="layer" id="layer3" inkscape:label="1 course">
     <ellipse
        style="fill:#ee0000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.932506"
        id="path1561"
@@ -125,11 +112,8 @@
        cy="122.83656"
        cx="79.396584" />
   </g>
-  <g
-     inkscape:groupmode="layer"
-     id="g5338"
-     inkscape:label="2 courses"
-     style="display:{% if certificate.mentor_semesters == 2 %}inline{% else %}none{% endif %}">
+  {% elif certificate.mentor_semesters == 2 %}
+  <g inkscape:groupmode="layer" id="g5338" inkscape:label="2 courses">
     <ellipse
        style="fill:#ee0000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.932506"
        id="ellipse5336"
@@ -145,11 +129,8 @@
        cy="122.83656"
        cx="92.061508" />
   </g>
-  <g
-     inkscape:groupmode="layer"
-     id="g5290"
-     inkscape:label="3 courses"
-     style="display:{% if certificate.mentor_semesters == 3 %}inline{% else %}none{% endif %}">
+  {% elif certificate.mentor_semesters == 3 %}
+  <g inkscape:groupmode="layer" id="g5290" inkscape:label="3 courses">
     <ellipse
        style="fill:#ee0000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.932506"
        id="ellipse5288"
@@ -172,11 +153,8 @@
        cy="122.8175"
        cx="79.414528" />
   </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer4"
-     inkscape:label="4+ courses"
-     style="display:{% if certificate.mentor_semesters >= 4 %}inline{% else %}none{% endif %}">
+  {% else %}
+  <g inkscape:groupmode="layer" id="layer4" inkscape:label="4+ courses">
     <path
        sodipodi:type="star"
        style="fill:#ee0000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.932506"
@@ -195,4 +173,5 @@
        transform="matrix(0.26458333,0,0,0.26458333,0.3147342,0.82420453)"
        inkscape:transform-center-y="3.3072901" />
   </g>
+  {% endif %}
 </svg>

@@ -30,13 +30,18 @@
                 {% endfor %}
               </ul>
             </li>
-            <form class="container-fluid justify-content-start">
-              <div class="input-group">
-                <a href="{{certificate.nav_previous.get_absolute_url}}" class="btn btn-outline-secondary{% if certificate.nav_previous is None %} disabled{% endif %}" role="button" id="prev-cert"><i class="bi-caret-left-fill" role="img" aria-label="Previous certificate"></i></a>
-                <input type="text" class="form-control" aria-label="Certificate staff member" readonly value="{{certificate.staff_member.name}}">
-                <a href="{{certificate.nav_next.get_absolute_url}}" class="btn btn-outline-secondary{% if certificate.nav_next is None %} disabled{% endif %}" role="button" id="next-cert"><i class="bi-caret-right-fill" role="img" aria-label="Next certificate"></i></a>
-              </div>
-            </form>
+            </li>
+              <form class="container-fluid justify-content-start">
+                <div class="input-group">
+                  <a href="{{certificate.nav_previous.get_absolute_url}}" class="btn btn-outline-secondary{% if certificate.nav_previous is None %} disabled{% endif %}" role="button" id="prev-cert"><i class="bi-caret-left-fill" role="img" aria-label="Previous certificate"></i></a>
+                  <input type="text" class="form-control" aria-label="Certificate staff member" readonly value="{{certificate.staff_member.name}}">
+                  <a href="{{certificate.nav_next.get_absolute_url}}" class="btn btn-outline-secondary{% if certificate.nav_next is None %} disabled{% endif %}" role="button" id="next-cert"><i class="bi-caret-right-fill" role="img" aria-label="Next certificate"></i></a>
+                </div>
+              </form>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url "certificate_pdf" certificate.pk %}">Download</a>
+            </li>
           </ul>
         </div>
       </div>
