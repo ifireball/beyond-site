@@ -29,6 +29,8 @@ class Course(models.Model):
 
     staff = models.ManyToManyField(to=StaffMember, through="Certificate")
 
+    courses = models.Manager()
+
     class Meta:
         ordering = ["-end_date"]
 
@@ -163,3 +165,37 @@ class Certificate(models.Model):
     def is_course_lead(self) -> bool:
         """Returns whether its a course lead certificate"""
         return self.instructor_level == self.InstructorLevel.COURSE_LEAD
+
+
+class MailJob(models.Model):
+    """A job to email a set of certificates"""
+
+    course = models.ForeignKey(to=Course, on_delete=models.CASCADE)
+    start_time = models.DateTimeField(auto_now_add=True, null=False)
+    message_title = models.CharField(max_length=100, blank=False, null=False)
+    message_body = models.TextField(blank=False, null=False)
+    certificates = models.ManyToManyField(to=Certificate)
+
+    mail_jobs = models.Manager()
+
+    class Meta:
+        ordering = ["start_time"]
+
+    def __str__(self):
+        return str(self.start_time)
+
+
+class MailJobCertificateResult(models.Model):
+    """Contains results for a certificate sending attempt"""
+
+    mail_job = models.ForeignKey(to=MailJob, on_delete=models.CASCADE)
+    certificate = models.ForeignKey(to=Certificate, on_delete=models.CASCADE)
+
+    class Status(models.IntegerChoices):
+        """Sending result status flag"""
+
+        FAILURE = 0, "Failue"
+        SUCCESS = 1, "Success"
+
+    status = models.IntegerField(choices=Status.choices, default=Status.FAILURE)
+    log = models.TextField(blank=False, null=True)

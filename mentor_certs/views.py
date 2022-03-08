@@ -6,7 +6,8 @@ from lxml.etree import XMLParser, fromstring  # pylint: disable=no-name-in-modul
 from reportlab.graphics import renderPDF
 from svglib.svglib import SvgRenderer
 
-from .models import Certificate
+from .forms import MailJobForm
+from .models import Certificate, Course
 
 
 def root(request: HttpRequest) -> HttpResponse:
@@ -47,3 +48,18 @@ def certificate_pdf(request: HttpRequest, *, certificate_id: int) -> HttpRespons
         },
     )
     return response
+
+
+def mail(request: HttpRequest, *, course_id: int) -> HttpResponse:
+    """Show the certificate mailing form"""
+    course = get_object_or_404(Course, pk=course_id)
+    if request.POST:
+        form = MailJobForm(request.POST, course=course)
+        if form.is_valid():
+            form.save()
+            return redirect(course.certificate_set.first())
+    else:
+        form = MailJobForm(course=course)
+    return TemplateResponse(
+        request, "mentor_certs/mail.html", {"course": course, "form": form}
+    )

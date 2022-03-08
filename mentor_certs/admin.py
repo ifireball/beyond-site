@@ -1,7 +1,7 @@
 """Django admin app configuration"""
 from django.contrib import admin
 
-from .models import Certificate, Course, StaffMember
+from .models import Certificate, Course, MailJob, MailJobCertificateResult, StaffMember
 
 
 @admin.register(StaffMember)
@@ -26,3 +26,18 @@ class CourseAdmin(admin.ModelAdmin):
 
     list_display = ("name", "start_date", "end_date")
     inlines = [CertificateAdmin]
+
+
+class MailJobCertificateResultAdmin(admin.TabularInline):
+    """Admin class for MailJobCertificateResult"""
+
+    model = MailJobCertificateResult
+    list_display = ("certificate", "status", "log")
+
+
+@admin.register(MailJob)
+class MailJobAdmin(admin.ModelAdmin):
+    """Admin class for MailJob"""
+
+    model = MailJob
+    inlines = [MailJobCertificateResultAdmin]

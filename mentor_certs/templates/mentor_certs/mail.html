@@ -1,0 +1,12 @@
+{% extends "mentor_certs/base.html" %}
+
+{% block body %}
+  <div class="container-fluid">
+    <h1>Sending certificates for {{course.name}}</h1>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Send">
+    </form>
+  </div>
+{% endblock %}
