@@ -1,4 +1,6 @@
 """mentor_certs views"""
+from dataclasses import dataclass
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
@@ -7,6 +9,7 @@ from reportlab.graphics import renderPDF
 from svglib.svglib import SvgRenderer
 
 from .forms import MailJobForm
+from .mail.protocols import MailJobRunner
 from .models import Certificate, Course
 
 
@@ -50,16 +53,26 @@ def certificate_pdf(request: HttpRequest, *, certificate_id: int) -> HttpRespons
     return response
 
 
-def mail(request: HttpRequest, *, course_id: int) -> HttpResponse:
-    """Show the certificate mailing form"""
-    course = get_object_or_404(Course, pk=course_id)
-    if request.POST:
-        form = MailJobForm(request.POST, course=course)
-        if form.is_valid():
-            form.save()
-            return redirect(course.certificate_set.first())
-    else:
-        form = MailJobForm(course=course)
-    return TemplateResponse(
-        request, "mentor_certs/mail.html", {"course": course, "form": form}
-    )
+@dataclass(frozen=True)
+class MailView:
+    """A mail-sending view"""
+
+    mail_job_runner: MailJobRunner = lambda mjob: None
+
+    def __call__(self, request: HttpRequest, *, course_id: int) -> HttpResponse:
+        """Show the certificate mailing form"""
+        course = get_object_or_404(Course, pk=course_id)
+        if request.POST:
+            form = MailJobForm(request.POST, course=course)
+            if form.is_valid():
+                mail_job = form.save()
+                self.mail_job_runner(mail_job)
+                return redirect(course.certificate_set.first())
+        else:
+            form = MailJobForm(course=course)
+        return TemplateResponse(
+            request, "mentor_certs/mail.html", {"course": course, "form": form}
+        )
+
+
+mail = MailView()

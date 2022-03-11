@@ -2,11 +2,15 @@
 Tests for mentor_certs app views
 """
 from random import choice
+from unittest.mock import call, create_autospec
 
 import pytest
-from django.test import Client
+from django.http import QueryDict
+from django.test import Client, RequestFactory
 
-from mentor_certs.models import Certificate
+from mentor_certs.mail.protocols import MailJobRunner
+from mentor_certs.models import Certificate, Course, MailJob
+from mentor_certs.views import MailView
 
 
 @pytest.mark.django_db
@@ -33,3 +37,43 @@ def test_certificate_view(client: Client) -> None:
     assert template_names == ["mentor_certs/certificate_view.html"]
     shown_cert = response.context["certificate"]
     assert shown_cert == some_cert
+
+
+@pytest.mark.django_db
+def test_mail_view_sends_mail(rf: RequestFactory) -> None:
+    """Test that the MailView sends out emails when the form is posted"""
+    course = Course.courses.get(name="Beyond OS 06")
+    course_certes = course.certificate_set.all()
+    cert1 = course_certes[0]
+    cert2 = course_certes[1]
+
+    message_title = "some message title"
+    message_body = "some message body text"
+    post_data = QueryDict(
+        "&".join(
+            map(
+                "=".join,
+                (
+                    ("message_title", message_title),
+                    ("message_body", message_body),
+                    ("certificates", str(cert1.pk)),
+                    ("certificates", str(cert2.pk)),
+                ),
+            )
+        )
+    )
+    post_request = rf.post("/some/path", post_data)
+    mj_query = MailJob.mail_jobs.filter(
+        course=course, message_title=message_title, message_body=message_body
+    )
+    mail_job_runner = create_autospec(MailJobRunner)
+    mail_view = MailView(mail_job_runner)
+
+    # Ensure we don't have the appropriate object in the DB before posting
+    assert not mj_query.exists()
+
+    mail_view(post_request, course_id=course.pk)
+
+    assert mj_query.exists()
+    mail_job = mj_query.get()
+    assert mail_job_runner.call_args_list == [call(mail_job)]
