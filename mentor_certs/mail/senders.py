@@ -6,6 +6,7 @@ from django.core.mail.backends.base import BaseEmailBackend
 from django.core.mail.message import EmailMessage
 
 from ..models import Certificate, MailJob
+from ..render import pdf
 from .protocols import CertificateMailSender, MailJobRunner
 
 
@@ -35,4 +36,5 @@ class CertificateMailer(CertificateMailSender):
             subject=mail_job.message_title,
             body=mail_job.message_body,
         )
+        message.attach(f"{certificate}.pdf", pdf(certificate), "application/pdf")
         message.send(fail_silently=False)

@@ -127,3 +127,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Testing
 TEST_RUNNER = "beyond_site.test_runner.PytestTestRunner"
+
+# Email
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.redhat.com"
+DEFAULT_FROM_EMAIL = "Beyond Bot <beyond@redhat.com>"

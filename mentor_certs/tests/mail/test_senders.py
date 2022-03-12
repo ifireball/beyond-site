@@ -103,3 +103,7 @@ def test_certificate_mailer_sends_out_certificates(
     assert message.recipients() == [cert1.staff_member.email]
     assert message.subject == message_title
     assert message.body == message_body
+    assert len(message.attachments) == 1
+    filename, _, mimetype = message.attachments[0]
+    assert filename == f"{cert1}.pdf"
+    assert mimetype == "application/pdf"
